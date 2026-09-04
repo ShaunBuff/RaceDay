@@ -125,3 +125,18 @@ RaceDay/
 │   └── RaceDay ERD.pdf
 │
 └── README.md
+
+## API Endpoint Plan
+
+The planned RaceDay REST API will provide endpoints for the main functions of the system.
+
+The endpoint plan covers:
+
+- Authentication
+- User Profiles
+- Events
+- Categories
+- Event Enrolments
+- Results
+
+The API will be developed in a later part of the project. Part 1 focuses on planning the endpoints before implementation.
