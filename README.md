@@ -34,7 +34,9 @@ The main deliverables are:
 
 Organisers will be able to:
 
-- Create, edit and delete events
+- Create events
+- Edit events
+- Delete events
 - Manage event categories
 - View participant enrolments
 - Capture participant results
