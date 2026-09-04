@@ -173,3 +173,15 @@ The planned category endpoints will allow Organisers to manage categories associ
 Categories allow Participants to select the appropriate event category when entering an event.
 
 The endpoint plan includes operations for viewing categories and creating, updating and deleting categories where required.
+
+### Enrolment Endpoints
+
+The planned enrolment endpoints will allow Participants to enter RaceDay events.
+
+An enrolment records the relationship between:
+
+- Participant
+- Event
+- Category
+
+Organisers will also be able to view enrolments for the events they manage.
