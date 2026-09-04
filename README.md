@@ -165,3 +165,11 @@ The planned event endpoints are:
 | DELETE | `/api/events/{id}` | Deletes an event. |
 
 Event creation, updating and deletion will be restricted to Organisers.
+
+### Category Endpoints
+
+The planned category endpoints will allow Organisers to manage categories associated with events.
+
+Categories allow Participants to select the appropriate event category when entering an event.
+
+The endpoint plan includes operations for viewing categories and creating, updating and deleting categories where required.
