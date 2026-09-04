@@ -32,6 +32,21 @@ The main deliverables are:
 
 ## Database Entities
 
+## Database Relationships
+
+The main relationships in the RaceDay database are:
+
+- One User can organise many Events.
+- One EventType can be associated with many Events.
+- One Location can be associated with many Events.
+- One Event can have many Categories.
+- One Participant can have many Enrolments.
+- One Event can have many Enrolments.
+- One Category can be selected for many Enrolments.
+- One Enrolment can have one Result.
+
+These relationships are implemented using primary keys and foreign keys.
+
 The RaceDay database consists of seven main entities:
 
 - Users
