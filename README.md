@@ -185,3 +185,14 @@ An enrolment records the relationship between:
 - Category
 
 Organisers will also be able to view enrolments for the events they manage.
+
+### Results Endpoints
+
+The planned results functionality will allow Organisers to capture participant race results.
+
+A result records information such as:
+
+- Finish time
+- Finishing position
+
+Participants will be able to view their own race results and performance history.
