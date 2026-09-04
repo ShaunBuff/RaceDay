@@ -4,35 +4,63 @@
 
 RaceDay is a web-based event management system designed for South African road running, walking and cycling events.
 
-This repository contains the planning and database work for the PROG6212 PoE.
+The system supports two main user roles: Organisers and Participants. Organisers manage events, categories, enrolments and participant results, while Participants can register, browse events, enter events and view their results.
+
+This repository contains the planning and database work completed for Part 1 of the PROG6212 Programming 2B PoE.
+
+---
 
 ## Part 1
 
-Part 1 focuses on system planning and database design.
+Part 1 focuses on system planning, database design and repository configuration.
 
 The main deliverables are:
 
 - Entity Relationship Diagram (ERD)
 - API Endpoint Plan
 - SQL Database Script
-- GitHub repository and CI/CD validation
+- GitHub repository
+- GitHub Actions CI/CD validation
+
+---
 
 ## User Roles
 
 ### Organiser
 
-Organisers will be able to manage events, manage event categories, view participant enrolments and capture participant results.
+Organisers will be able to:
+
+- Create, edit and delete events
+- Manage event categories
+- View participant enrolments
+- Capture participant results
+- View information about events they manage
 
 ### Participant
 
-Participants will be able to register, log in, browse events, enter events, select categories and view their own results.
+Participants will be able to:
+
+- Register and log in
+- Browse available events
+- Enter an event
+- Select an event category
+- View their own enrolments
+- View and track their results and performance
+
+---
 
 ## Repository Structure
 
-The `docs` folder will contain the Part 1 planning documents.
-
-The `.github/workflows` folder will contain the GitHub Actions workflow used to validate the repository.
-
-## Part 1 Status
-
-Work in progress.
+```text
+RaceDay/
+│
+├── .github/
+│   └── workflows/
+│       └── build.yml
+│
+├── docs/
+│   ├── RaceDay_Database.sql
+│   ├── API Endpoint Plan
+│   └── RaceDay ERD.pdf
+│
+└── README.md
