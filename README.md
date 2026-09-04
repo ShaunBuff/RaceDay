@@ -151,3 +151,17 @@ The planned authentication endpoints are:
 | POST | `/api/auth/login` | Authenticates a registered user. |
 
 Authentication will also determine whether the user is an Organiser or Participant.
+
+### Event Endpoints
+
+The planned event endpoints are:
+
+| Method | Route | Purpose |
+|---|---|---|
+| GET | `/api/events` | Returns available RaceDay events. |
+| GET | `/api/events/{id}` | Returns details for a specific event. |
+| POST | `/api/events` | Creates a new event for an Organiser. |
+| PUT | `/api/events/{id}` | Updates an existing event. |
+| DELETE | `/api/events/{id}` | Deletes an event. |
+
+Event creation, updating and deletion will be restricted to Organisers.
