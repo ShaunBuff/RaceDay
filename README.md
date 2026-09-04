@@ -59,6 +59,16 @@ The RaceDay database consists of seven main entities:
 
 Each entity has a specific purpose within the RaceDay database and supports the functionality required by the system.
 
+## Database Constraints
+
+The SQL database uses several constraints to maintain data integrity:
+
+- Primary keys uniquely identify records.
+- Foreign keys maintain relationships between related tables.
+- NOT NULL constraints ensure required information is provided.
+- UNIQUE constraints prevent duplicate values where appropriate.
+- DEFAULT constraints provide suitable default values where required.
+
 ### Organiser
 
 Organisers will be able to:
