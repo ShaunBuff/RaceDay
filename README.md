@@ -69,6 +69,21 @@ The SQL database uses several constraints to maintain data integrity:
 - UNIQUE constraints prevent duplicate values where appropriate.
 - DEFAULT constraints provide suitable default values where required.
 
+## Sample Database Data
+
+The SQL script contains realistic sample data for testing the RaceDay database.
+
+The sample data includes:
+
+- 2 Organisers
+- 2 Participants
+- 3 Events
+- Categories for each Event
+- Sample Enrolments
+- Sample Results
+
+This sample data allows the relationships between the database entities to be tested before development of the application.
+
 ### Organiser
 
 Organisers will be able to:
