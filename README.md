@@ -46,12 +46,13 @@ Organisers will be able to:
 
 Participants will be able to:
 
-- Register and log in
+- Register an account
+- Log in
 - Browse available events
 - Enter an event
 - Select an event category
 - View their own enrolments
-- View and track their results and performance
+- View and track their race results and performance history
 
 ---
 
