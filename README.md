@@ -30,6 +30,20 @@ The main deliverables are:
 
 ## User Roles
 
+## Database Entities
+
+The RaceDay database consists of seven main entities:
+
+- Users
+- EventTypes
+- Locations
+- Events
+- Categories
+- Enrolments
+- Results
+
+Each entity has a specific purpose within the RaceDay database and supports the functionality required by the system.
+
 ### Organiser
 
 Organisers will be able to:
