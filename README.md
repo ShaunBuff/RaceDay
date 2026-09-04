@@ -196,3 +196,37 @@ A result records information such as:
 - Finishing position
 
 Participants will be able to view their own race results and performance history.
+
+## Part 1 Status
+
+### Completed
+
+- [x] ERD completed
+- [x] API Endpoint Plan completed
+- [x] SQL database created
+- [x] Database relationships tested
+- [x] Sample data inserted
+- [x] SQL script added to `/docs`
+- [x] GitHub repository configured
+- [x] GitHub Actions CI/CD configured
+- [x] CI/CD workflow successfully tested
+- [x] README documentation completed
+
+### Remaining
+
+- [ ] Record Part 1 demonstration video
+- [ ] Upload demonstration video to YouTube as Unlisted
+- [ ] Add YouTube link to README
+- [ ] Complete final Part 1 submission
+
+## CI/CD
+
+GitHub Actions is used to validate the Part 1 repository.
+
+The workflow checks that the required repository structure and database files are present.
+
+The latest `RaceDay Part 1 CI` workflow completed successfully.
+
+## Demonstration Video
+
+The Part 1 demonstration video link will be added after the video has been recorded and uploaded to YouTube as an Unlisted video.
