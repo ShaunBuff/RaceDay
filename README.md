@@ -8,6 +8,10 @@ The system supports two main user roles: Organisers and Participants. Organisers
 
 This repository contains the planning and database work completed for Part 1 of the PROG6212 Programming 2B PoE.
 
+## System Purpose
+
+RaceDay is planned as a centralised event management system for road running, walking and cycling events. The system is designed to help Organisers manage events and participant information while allowing Participants to register for events and track their results.
+
 ---
 
 ## Part 1
