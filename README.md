@@ -140,3 +140,14 @@ The endpoint plan covers:
 - Results
 
 The API will be developed in a later part of the project. Part 1 focuses on planning the endpoints before implementation.
+
+### Authentication Endpoints
+
+The planned authentication endpoints are:
+
+| Method | Route | Purpose |
+|---|---|---|
+| POST | `/api/auth/register` | Registers a new user. |
+| POST | `/api/auth/login` | Authenticates a registered user. |
+
+Authentication will also determine whether the user is an Organiser or Participant.
