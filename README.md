@@ -211,13 +211,9 @@ Participants will be able to view their own race results and performance history
 - [x] GitHub Actions CI/CD configured
 - [x] CI/CD workflow successfully tested
 - [x] README documentation completed
+- [x] Unlisted video uploaded
+- [x] Unlisted youtube video link = https://youtu.be/LAioX0J0bvE
 
-### Remaining
-
-- [ ] Record Part 1 demonstration video
-- [ ] Upload demonstration video to YouTube as Unlisted
-- [ ] Add YouTube link to README
-- [ ] Complete final Part 1 submission
 
 ## CI/CD
 
