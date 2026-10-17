@@ -278,3 +278,91 @@ Ensure Swagger descriptions and request/response examples accurately document th
 Improve CI validation
 Confirm the workflow builds the exact solution, runs the test project, and fails if tests fail. Document the successful workflow in the README and capture the actual green result.
 
+## Part 2 — RaceDay REST API
+
+### Overview
+
+The RaceDay REST API is an ASP.NET Core Web API developed in C# using .NET 8 and Entity Framework Core. It supports road running, walking, and cycling event management, including participant enrolments and race results.
+
+The API uses SQL Server for persistent data storage and JWT bearer tokens for authentication and role-based access control.
+
+### Technologies Used
+
+- C#
+- ASP.NET Core Web API (.NET 8)
+- Entity Framework Core
+- Microsoft SQL Server
+- JWT bearer authentication
+- Swagger / OpenAPI
+- xUnit automated testing
+- GitHub Actions continuous integration
+
+### Prerequisites
+
+Before running the application, install:
+
+- .NET 8 SDK
+- Microsoft SQL Server
+- Visual Studio 2022 or another compatible .NET development environment
+
+### Database Configuration
+
+1. Open SQL Server Management Studio (SSMS).
+2. Connect to your SQL Server instance.
+3. Create and configure the RaceDay database using the SQL script in the `docs` folder.
+4. Configure the database connection string in the API configuration.
+5. Verify that the connection string matches your SQL Server instance and database name.
+
+Do not commit passwords, private credentials, or production secrets to GitHub.
+
+### JWT Configuration
+
+Configure the JWT signing key using .NET user secrets or another secure configuration provider.
+
+The application expects the signing key under the `Jwt:Key` configuration setting. The issuer and audience must match the values configured by the API.
+
+### Restoring and Building the Solution
+
+Open a terminal in the repository root and run:
+
+```powershell
+dotnet restore .\RaceDay.slnx
+dotnet build .\RaceDay.slnx --configuration Release
+```
+
+### Running Automated Tests
+
+Run the automated test project with:
+
+```powershell
+dotnet test .\RaceDay.API.Tests\RaceDay.API.Tests.csproj --configuration Release
+```
+
+The test suite includes password hashing, authentication validation, authorization configuration, and enrolment validation scenarios.
+
+### Running the API
+
+Set `RaceDay.Api` as the startup project in Visual Studio and run the application.
+
+When the API is running, open its Swagger UI using the HTTPS address shown in the application output, followed by `/swagger`.
+
+### Authentication and API Testing
+
+1. Register a participant using the registration endpoint.
+2. Log in using the login endpoint to obtain a JWT bearer token.
+3. Select **Authorize** in Swagger and enter the token.
+4. Test protected endpoints using an account with the appropriate role.
+5. Verify that unauthorized or invalid requests are rejected.
+
+### Continuous Integration
+
+GitHub Actions is configured to restore, build, and test the solution when supported branches are updated or pull requests are opened. Check the **Actions** tab in the GitHub repository to review workflow results.
+
+### Repository
+
+Source code and development history are available at:
+
+https://github.com/ShaunBuff/RaceDay
+
+
+
