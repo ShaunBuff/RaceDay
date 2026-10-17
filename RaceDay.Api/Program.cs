@@ -1,28 +1,28 @@
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using RaceDay.Api.Data;
 using RaceDay.Api.Services;
 using System;
+using System.IO;
+using System.Reflection;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Register API controllers
+// Register controllers and database context.
 builder.Services.AddControllers();
 
-// Register the database context
 builder.Services.AddDbContext<RaceDayContext>(options =>
     options.UseSqlServer(
         builder.Configuration.GetConnectionString("RaceDayConnection")));
 
-// Register the password hashing service
+// Register password hashing service.
 builder.Services.AddScoped<PasswordService>();
 
-// Read the JWT signing key from User Secrets or configuration
+// Read and validate JWT signing key.
 var jwtKey = builder.Configuration["Jwt:Key"]
     ?? throw new InvalidOperationException(
         "JWT signing key is missing. Configure Jwt:Key using User Secrets.");
@@ -33,7 +33,7 @@ if (Encoding.UTF8.GetByteCount(jwtKey) < 32)
         "The JWT signing key must contain at least 32 bytes.");
 }
 
-// Configure JWT authentication
+// Configure JWT authentication.
 builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -55,10 +55,10 @@ builder.Services
         };
     });
 
-// Register authorization
+// Register authorization services.
 builder.Services.AddAuthorization();
 
-// Configure Swagger and JWT authorization
+// Configure Swagger/OpenAPI.
 builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSwaggerGen(options =>
@@ -67,9 +67,23 @@ builder.Services.AddSwaggerGen(options =>
     {
         Title = "RaceDay API",
         Version = "v1",
-        Description = "API for RaceDay running, walking and cycling events."
+        Description =
+            "REST API for managing running, walking and cycling events, " +
+            "participant enrolments and race results."
     });
 
+    // Include XML comments when the documentation file exists.
+    var xmlFile =
+        $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+
+    if (File.Exists(xmlPath))
+    {
+        options.IncludeXmlComments(xmlPath);
+    }
+
+    // Configure JWT bearer authorization in Swagger.
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Name = "Authorization",
@@ -77,7 +91,8 @@ builder.Services.AddSwaggerGen(options =>
         Scheme = "bearer",
         BearerFormat = "JWT",
         In = ParameterLocation.Header,
-        Description = "Paste your JWT access token here. Do not type 'Bearer ' before it."
+        Description =
+            "Enter your JWT access token without typing 'Bearer ' first."
     });
 
     options.AddSecurityRequirement(new OpenApiSecurityRequirement
@@ -98,7 +113,7 @@ builder.Services.AddSwaggerGen(options =>
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline
+// Enable Swagger in Development.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -107,7 +122,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-// Authentication must run before authorization
+// Authentication must run before authorization.
 app.UseAuthentication();
 app.UseAuthorization();
 
