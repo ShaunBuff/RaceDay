@@ -226,3 +226,36 @@ The latest `RaceDay Part 1 CI` workflow completed successfully.
 ## Demonstration Video
 
 The Part 1 demonstration video link will be added after the video has been recorded and uploaded to YouTube as an Unlisted video.
+
+
+## Running RaceDay API
+
+### Prerequisites
+- .NET 8 SDK
+- SQL Server
+- Visual Studio 2022 or another compatible .NET IDE
+
+### Database setup
+1. Create the RaceDay database using the SQL script in the `docs` folder.
+2. Configure the SQL Server connection string in the API configuration.
+3. Configure the JWT signing key using .NET user secrets or another secure configuration provider.
+
+### Build the solution
+
+```powershell
+dotnet restore RaceDay.slnx
+dotnet build RaceDay.slnx --configuration Release
+```
+
+### Run the automated tests
+
+```powershell
+dotnet test RaceDay.API.Tests/RaceDay.API.Tests.csproj --configuration Release
+```
+
+### API documentation
+Run the API and open its Swagger UI to inspect and test the available endpoints.
+
+### Continuous integration
+GitHub Actions builds the API and runs the automated tests when changes are pushed or pull requests are opened against the configured branches.
+
