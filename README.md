@@ -263,3 +263,6 @@ Improve the README
 Document setup, SQL Server configuration, JWT secrets, Swagger, endpoints, and test commands.
 Commit message: Document API setup and automated testing
 
+Add authentication validation tests
+Test duplicate email registration, invalid login credentials, and password verification. If any of these are already covered, add only genuinely missing cases.
+
