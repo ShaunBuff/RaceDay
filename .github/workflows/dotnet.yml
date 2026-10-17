@@ -1,3 +1,4 @@
+
 name: RaceDay API CI
 
 on:
@@ -20,57 +21,11 @@ jobs:
         with:
           dotnet-version: 8.0.x
 
-      - name: Locate solution or project
-        id: locate
-        shell: bash
-        run: |
-          TARGET=$(find . -type f \( -name '*.sln' -o -name '*.slnx' \) \
-            -not -path '*/bin/*' \
-            -not -path '*/obj/*' \
-            -not -path '*/.git/*' \
-            -print -quit)
+      - name: Restore solution
+        run: dotnet restore RaceDay.slnx
 
-          if [ -z "$TARGET" ]; then
-            TARGET=$(find . -type f -name '*.csproj' \
-              -not -path '*/bin/*' \
-              -not -path '*/obj/*' \
-              -not -path '*/.git/*' \
-              -not -path '*Tests*' \
-              -print -quit)
-          fi
+      - name: Build solution
+        run: dotnet build RaceDay.slnx --configuration Release --no-restore
 
-          if [ -z "$TARGET" ]; then
-            echo "No solution or application project found."
-            exit 1
-          fi
-
-          echo "path=$TARGET" >> "$GITHUB_OUTPUT"
-          echo "Found: $TARGET"
-
-      - name: Restore packages
-        run: dotnet restore "${{ steps.locate.outputs.path }}"
-
-      - name: Build solution or project
-        run: dotnet build "${{ steps.locate.outputs.path }}" --configuration Release --no-restore
-
-      - name: Run automated tests
-        shell: bash
-        run: |
-          TEST_PROJECT=$(find . -type f -name '*.csproj' \
-            -not -path '*/bin/*' \
-            -not -path '*/obj/*' \
-            -not -path '*/.git/*' \
-            -iname '*Tests*.csproj' \
-            -print -quit)
-
-          if [ -n "$TEST_PROJECT" ]; then
-            dotnet test "$TEST_PROJECT" --configuration Release \
-              --logger "console;verbosity=normal"
-          elif [[ "${{ steps.locate.outputs.path }}" == *.sln || "${{ steps.locate.outputs.path }}" == *.slnx ]]; then
-            dotnet test "${{ steps.locate.outputs.path }}" \
-              --configuration Release --no-build \
-              --logger "console;verbosity=normal"
-          else
-            echo "No test project found."
-            exit 1
-          fi
+      - name: Run unit tests
+        run: dotnet test RaceDay.API.Tests/RaceDay.API.Tests.csproj --configuration Release --no-restore --logger "console;verbosity=normal"
