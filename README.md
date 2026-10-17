@@ -360,6 +360,13 @@ GitHub Actions is configured to restore, build, and test the solution when suppo
 
 ### Repository
 
+GitHub Actions CI Workflow
+
+The GitHub Actions workflow automatically builds the RaceDay API and runs the automated unit tests to help verify that the application works correctly.
+
+CI Workflow Evidence
+
+
 Source code and development history are available at:
 
 https://github.com/ShaunBuff/RaceDay
