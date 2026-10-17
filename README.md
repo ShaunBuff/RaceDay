@@ -272,4 +272,5 @@ Verify that invalid event dates or missing required event details are rejected, 
 Add enrolment validation tests
 Cover invalid event IDs, a category belonging to another event, and duplicate enrolments. Test the actual endpoint behaviour where practical.
 
-
+Improve API endpoint documentation
+Ensure Swagger descriptions and request/response examples accurately document the endpoints, authentication requirements, and role restrictions.
