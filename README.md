@@ -259,3 +259,7 @@ Run the API and open its Swagger UI to inspect and test the available endpoints.
 ### Continuous integration
 GitHub Actions builds the API and runs the automated tests when changes are pushed or pull requests are opened against the configured branches.
 
+Improve the README
+Document setup, SQL Server configuration, JWT secrets, Swagger, endpoints, and test commands.
+Commit message: Document API setup and automated testing
+
