@@ -266,3 +266,7 @@ Commit message: Document API setup and automated testing
 Add authentication validation tests
 Test duplicate email registration, invalid login credentials, and password verification. If any of these are already covered, add only genuinely missing cases.
 
+Improve event validation
+Verify that invalid event dates or missing required event details are rejected, and that an organiser cannot modify another organiser's event.
+
+
