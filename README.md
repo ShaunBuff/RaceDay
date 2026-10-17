@@ -274,3 +274,7 @@ Cover invalid event IDs, a category belonging to another event, and duplicate en
 
 Improve API endpoint documentation
 Ensure Swagger descriptions and request/response examples accurately document the endpoints, authentication requirements, and role restrictions.
+
+Improve CI validation
+Confirm the workflow builds the exact solution, runs the test project, and fails if tests fail. Document the successful workflow in the README and capture the actual green result.
+
