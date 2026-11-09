@@ -3,203 +3,165 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RaceDay.Api.Data;
-using RaceDay.Api.DTOs;
 using RaceDay.Api.Models;
-using System;
 using System.Security.Claims;
-using System.Threading.Tasks;
 
-namespace RaceDay.Api.Controllers;
-
-[ApiController]
-[Route("api/[controller]")]
-public class EventsController : ControllerBase
+namespace RaceDay.Api.Controllers
 {
-    private readonly RaceDayContext _context;
-
-    public EventsController(RaceDayContext context)
+    [ApiController]
+    [Route("api/[controller]")]
+    public class EventsController : ControllerBase
     {
-        _context = context;
-    }
+        private readonly RaceDayContext _context;
 
-    // GET: api/Events
-    // Public access: anyone can browse events.
-    [HttpGet]
-    [AllowAnonymous]
-    public async Task<IActionResult> GetEvents()
-    {
-        var events = await _context.Events
-            .AsNoTracking()
-            .ToListAsync();
-
-        return Ok(events);
-    }
-
-    // POST: api/Events
-    // Only organisers can create events.
-    [HttpPost]
-    [Authorize(Roles = "Organiser")]
-    public async Task<IActionResult> CreateEvent(
-        [FromBody] CreateEventRequest request)
-    {
-        var organiserId = GetCurrentUserId();
-
-        if (organiserId == null)
-            return Unauthorized();
-
-        if (!request.EventDate.HasValue ||
-            request.EventDate.Value == default)
+        public EventsController(RaceDayContext context)
         {
-            return BadRequest(new
-            {
-                message = "A valid event date is required."
-            });
+            _context = context;
         }
 
-        if (!await ReferencesExist(
-            request.EventTypeID, request.LocationID))
+        // GET: api/Events
+        // Everyone can view events.
+        [AllowAnonymous]
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Event>>> GetEvents()
         {
-            return BadRequest(new
-            {
-                message = "The selected event type or location is invalid."
-            });
+            return await _context.Events
+                .AsNoTracking()
+                .ToListAsync();
         }
 
-        var newEvent = new Event
+        // GET: api/Events/5
+        // Everyone can view event details.
+        [AllowAnonymous]
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Event>> GetEvent(int id)
         {
-            OrganiserID = organiserId.Value,
-            EventTypeID = request.EventTypeID,
-            LocationID = request.LocationID,
-            EventName = request.EventName.Trim(),
-            Description = request.Description?.Trim(),
-            EventDate = request.EventDate.Value,
-            DistanceKm = request.DistanceKm,
-            CreatedAt = DateTime.UtcNow
-        };
+            var eventItem = await _context.Events
+                .AsNoTracking()
+                .FirstOrDefaultAsync(e => e.EventID == id);
 
-        _context.Events.Add(newEvent);
-        await _context.SaveChangesAsync();
-
-        return StatusCode(201, new
-        {
-            message = "Event created successfully.",
-            eventDetails = newEvent
-        });
-    }
-
-    // PUT: api/Events/1
-    // Organisers can update only their own events.
-    [HttpPut("{id:int}")]
-    [Authorize(Roles = "Organiser")]
-    public async Task<IActionResult> UpdateEvent(
-        int id,
-        [FromBody] CreateEventRequest request)
-    {
-        var organiserId = GetCurrentUserId();
-
-        if (organiserId == null)
-            return Unauthorized();
-
-        var existingEvent = await _context.Events
-            .FirstOrDefaultAsync(e =>
-                e.EventID == id &&
-                e.OrganiserID == organiserId.Value);
-
-        if (existingEvent == null)
-        {
-            return NotFound(new
+            if (eventItem == null)
             {
-                message = "Event not found or you do not own it."
-            });
+                return NotFound();
+            }
+
+            return eventItem;
         }
 
-        if (!request.EventDate.HasValue ||
-            request.EventDate.Value == default)
+        // POST: api/Events
+        // Only organisers can create events.
+        [Authorize(Roles = "Organiser")]
+        [HttpPost]
+        public async Task<ActionResult<Event>> CreateEvent(Event eventItem)
         {
-            return BadRequest(new
+            if (!TryGetOrganiserId(out var organiserId))
             {
-                message = "A valid event date is required."
-            });
+                return Unauthorized();
+            }
+
+            // Assign ownership using the logged-in organiser.
+            // Never trust an OrganiserID supplied by the client.
+            eventItem.OrganiserID = organiserId;
+            eventItem.CreatedAt = DateTime.UtcNow;
+
+            _context.Events.Add(eventItem);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(
+                nameof(GetEvent),
+                new { id = eventItem.EventID },
+                eventItem);
         }
 
-        if (!await ReferencesExist(
-            request.EventTypeID, request.LocationID))
+        // PUT: api/Events/5
+        // Only the event's owning organiser can update it.
+        [Authorize(Roles = "Organiser")]
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateEvent(
+            int id,
+            Event eventItem)
         {
-            return BadRequest(new
+            if (id != eventItem.EventID)
             {
-                message = "The selected event type or location is invalid."
-            });
+                return BadRequest();
+            }
+
+            if (!TryGetOrganiserId(out var organiserId))
+            {
+                return Unauthorized();
+            }
+
+            var existingEvent = await _context.Events
+                .FirstOrDefaultAsync(e => e.EventID == id);
+
+            if (existingEvent == null)
+            {
+                return NotFound();
+            }
+
+            if (existingEvent.OrganiserID != organiserId)
+            {
+                return Forbid();
+            }
+
+            // Update editable properties only.
+            // Preserve EventID, OrganiserID and CreatedAt.
+            existingEvent.EventTypeID = eventItem.EventTypeID;
+            existingEvent.LocationID = eventItem.LocationID;
+            existingEvent.EventName = eventItem.EventName;
+            existingEvent.Description = eventItem.Description;
+            existingEvent.EventDate = eventItem.EventDate;
+            existingEvent.DistanceKm = eventItem.DistanceKm;
+
+            await _context.SaveChangesAsync();
+
+            return NoContent();
         }
 
-        existingEvent.EventName = request.EventName.Trim();
-        existingEvent.Description = request.Description?.Trim();
-        existingEvent.EventTypeID = request.EventTypeID;
-        existingEvent.LocationID = request.LocationID;
-        existingEvent.EventDate = request.EventDate.Value;
-        existingEvent.DistanceKm = request.DistanceKm;
-
-        await _context.SaveChangesAsync();
-
-        return Ok(new
+        // DELETE: api/Events/5
+        // Only the event's owning organiser can delete it.
+        [Authorize(Roles = "Organiser")]
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteEvent(int id)
         {
-            message = "Event updated successfully.",
-            eventDetails = existingEvent
-        });
-    }
-
-    // DELETE: api/Events/1
-    // Organisers can delete only their own events.
-    [HttpDelete("{id:int}")]
-    [Authorize(Roles = "Organiser")]
-    public async Task<IActionResult> DeleteEvent(int id)
-    {
-        var organiserId = GetCurrentUserId();
-
-        if (organiserId == null)
-            return Unauthorized();
-
-        var existingEvent = await _context.Events
-            .FirstOrDefaultAsync(e =>
-                e.EventID == id &&
-                e.OrganiserID == organiserId.Value);
-
-        if (existingEvent == null)
-        {
-            return NotFound(new
+            if (!TryGetOrganiserId(out var organiserId))
             {
-                message = "Event not found or you do not own it."
-            });
+                return Unauthorized();
+            }
+
+            var eventItem = await _context.Events
+                .FirstOrDefaultAsync(e => e.EventID == id);
+
+            if (eventItem == null)
+            {
+                return NotFound();
+            }
+
+            if (eventItem.OrganiserID != organiserId)
+            {
+                return Forbid();
+            }
+
+            _context.Events.Remove(eventItem);
+
+            await _context.SaveChangesAsync();
+
+            return NoContent();
         }
 
-        _context.Events.Remove(existingEvent);
-        await _context.SaveChangesAsync();
+        // Get the logged-in organiser's database ID.
+        private bool TryGetOrganiserId(out int organiserId)
+        {
+            var userIdClaim = User.FindFirst(
+                ClaimTypes.NameIdentifier)?.Value;
 
-        return NoContent();
-    }
+            return int.TryParse(userIdClaim, out organiserId);
+        }
 
-    // Read the authenticated user's ID from their JWT token.
-    private int? GetCurrentUserId()
-    {
-        var userIdClaim = User.FindFirst(
-            ClaimTypes.NameIdentifier)?.Value;
-
-        return int.TryParse(userIdClaim, out var userId)
-            ? userId
-            : null;
-    }
-
-    // Check that the selected event type and location exist.
-    private async Task<bool> ReferencesExist(
-        int eventTypeId,
-        int locationId)
-    {
-        var eventTypeExists = await _context.EventTypes
-            .AnyAsync(t => t.EventTypeID == eventTypeId);
-
-        if (!eventTypeExists)
-            return false;
-
-        return await _context.Locations
-            .AnyAsync(l => l.LocationID == locationId);
+        private bool EventExists(int id)
+        {
+            return _context.Events
+                .Any(e => e.EventID == id);
+        }
     }
 }
