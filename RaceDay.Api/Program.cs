@@ -21,7 +21,8 @@ builder.Services.AddDbContext<RaceDayContext>(options =>
 
 // Register password hashing service.
 builder.Services.AddScoped<PasswordService>();
-
+// Register Azure Blob Storage service.
+builder.Services.AddScoped<BlobStorageService>();
 // Read and validate JWT signing key.
 var jwtKey = builder.Configuration["Jwt:Key"]
     ?? throw new InvalidOperationException(

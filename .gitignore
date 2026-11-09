@@ -3,3 +3,11 @@
 .vs/
 **/bin/
 **/obj/
+
+# Visual Studio temporary and user-specific files
+.vs/
+**/bin/
+**/obj/
+*.user
+*.suo
+*.sln.docstates
