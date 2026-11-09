@@ -1,0 +1,36 @@
+﻿@{
+    ViewData["Title"] = "My Profile";
+}
+
+<div class="container mt-4">
+
+    <h1>👤 My Profile</h1>
+
+    <div class="card shadow-sm">
+
+        <div class="card-body">
+
+            <h4>
+                @Context.Session.GetString("FirstName")
+            </h4>
+
+            <p>
+                <strong>User ID:</strong>
+                @Context.Session.GetString("UserID")
+            </p>
+
+            <p>
+                <strong>Role:</strong>
+                @Context.Session.GetString("Role")
+            </p>
+
+            <div class="alert alert-info">
+                Profile information is managed through the
+                RaceDay API.
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

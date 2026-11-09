@@ -1,0 +1,115 @@
+﻿@{
+    ViewData["Title"] = "Organiser Dashboard";
+}
+
+<div class="container mt-4">
+
+    <div class="text-center mb-4">
+
+        <h1>🏁 Organiser Dashboard</h1>
+
+        <p class="lead">
+            Manage RaceDay events, categories, enrolments and results.
+        </p>
+
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-3 mb-3">
+
+            <div class="card text-center shadow-sm">
+
+                <div class="card-body">
+
+                    <h2>
+                        @ViewBag.EventCount
+                    </h2>
+
+                    <p>
+                        Events
+                    </p>
+
+                    <a asp-action="Events"
+                       class="btn btn-primary">
+                        Manage Events
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3 mb-3">
+
+            <div class="card text-center shadow-sm">
+
+                <div class="card-body">
+
+                    <h2>📋</h2>
+
+                    <p>
+                        Categories
+                    </p>
+
+                    <a asp-action="Categories"
+                       class="btn btn-primary">
+                        Categories
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3 mb-3">
+
+            <div class="card text-center shadow-sm">
+
+                <div class="card-body">
+
+                    <h2>👥</h2>
+
+                    <p>
+                        Enrolments
+                    </p>
+
+                    <a asp-action="Enrolments"
+                       class="btn btn-primary">
+                        Enrolments
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3 mb-3">
+
+            <div class="card text-center shadow-sm">
+
+                <div class="card-body">
+
+                    <h2>🏆</h2>
+
+                    <p>
+                        Results
+                    </p>
+
+                    <a asp-action="Results"
+                       class="btn btn-primary">
+                        Results
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
