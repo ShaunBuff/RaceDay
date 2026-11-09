@@ -334,7 +334,7 @@ An initial `BlobStorageService` implementation and the Azure Storage Blobs NuGet
 
 Add the final Part 3 demonstration video here after recording and uploading it to YouTube as an Unlisted video.
 
-**Final demonstration video:** [Insert YouTube link]
+**Final demonstration video:** (https://youtu.be/XAf3ckhbkXs)
 
 The demonstration should show the working application, relevant API functionality, automated testing and Docker execution.
 
